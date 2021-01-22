@@ -1,0 +1,57 @@
+{% extends 'mini/layout.html' %}
+{% load static %}
+
+{% block head %}
+  <title>IDE - Mini</title>
+{% endblock head %}
+{% block body %}
+
+<link rel="stylesheet" href="{% static 'mini/css/rte_theme_default.css' %}" />
+<script type="text/javascript" src="{% static 'mini/js/rte.js' %}"></script>
+<script type="text/javascript" src="{% static 'mini/plugins/all_plugins.js' %}"></script>
+
+<div id="div_editor1" style="min-height:400px;max-height:800px">
+</div>
+
+<div class="w3-container">
+  <div class="w3-main">
+    <div>
+      <form method="POST" action="{% url 'mini_IDE' %}">
+        {% csrf_token %}
+        <label for="appname">App Name : </label>
+      <input type="text" id="appname" name="app_name" required>
+      <label for="filename">File Name : </label>
+      <input type="text" id="filename" name="file_name" required>.html
+      <input type="text" id="htmlcode" name="html_code" hidden onsubmit="update_code()">
+      <input type="submit" name="Save" value="Save">
+      </form>
+    </div>
+    <div class="w3-panel">
+      <p class="w3-text-red">{{message}}</p>
+    </div>
+  </div>
+</div>
+<script>    
+  var editor1 = new RichTextEditor("#div_editor1", { editorResizeMode: "height" });
+  editor1.setHTMLCode("{% autoescape off %}{{IDE_DEFAULT_content}}{% endautoescape %}")
+  var htmlcode = document.getElementById('htmlcode');
+  htmlcode.value = editor1.getHTMLCode();
+  function update_code() {
+  var htmlcode = document.getElementById('htmlcode');
+  htmlcode.value = editor1.getHTMLCode();
+  console.log(htmlcode.value);
+  }
+
+  function save() {
+    fname = document.getElementById('filename').value
+    appname = document.getElementById('appname').value
+    html = document.getElementById('div_editor1').html
+  }
+  function download() {
+    /*file operations*/
+    return 
+  }
+</script>
+
+
+{% endblock body %}

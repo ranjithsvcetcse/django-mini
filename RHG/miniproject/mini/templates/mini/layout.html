@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% block head %}{% endblock head %}
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+	{% include 'mini/header.html' %}
+	{% block body %}{% endblock body %}
+	{% include 'mini/footer.html' %}
+</body>
+</html>
