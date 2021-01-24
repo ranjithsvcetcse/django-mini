@@ -3,4 +3,20 @@
 
 {% block head %}{% endblock head %}
 
-{% block body %}{% endblock body %}
+{% block body %}
+<div class="w3-container">
+	<div class="">
+		
+		{% for i in files %}
+			{{i.root}}<br>
+			Files: {% for file in i.files %}
+			{{file}},
+			{% endfor %}<br>
+			Dirs : {% for dir in i.dirs %}
+			{{dir}},
+			{% endfor %}<br><br>
+		{% endfor %}
+
+	</div>
+</div>
+{% endblock body %}

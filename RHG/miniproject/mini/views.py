@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import os
 from miniproject.settings import BASE_DIR
 
+
 class IDE(LoginRequiredMixin, View):
 	'''
 		Class comments
@@ -15,6 +16,9 @@ class IDE(LoginRequiredMixin, View):
 	html_template_file = 'mini/IDE.html'
 	# model = model_name
 	# form = form_name
+	
+	context = {}
+	context['page_name'] = 'IDE'
 
 	def get(self, request):
 		# get method
@@ -23,20 +27,26 @@ class IDE(LoginRequiredMixin, View):
 		return render(request, self.html_template_file, locals())
 
 	def post(self, request):
-		 
-	 	app = request.POST['app_name'] + '\\templates\\' + request.POST['app_name'] 
-	 	file = request.POST['file_name'] + '.html'
-	 	content = request.POST['html_code']
-	 	app_path = os.path.join(BASE_DIR, app)
-	 	file_path = os.path.join(app_path, file)
-	 	print(app,file,BASE_DIR, file_path)
-	 	try:
-	 		with open(file_path, 'w') as fp:
-	 			fp.write(content)
-	 			fp.close()
-	 	except:
-	 		message = 'Something went wrong! Check all file names are correct.'
-	 	return render(request, self.html_template_file, context={'IDE_DEFAULT_content':content, 'message':message})
+
+		app_name = request.POST['app_name']
+		file_name = request.POST['file_name']
+		content = request.POST['html_code']
+		self.context['IDE_DEFAULT_content'] = content
+		app = app_name + '\\templates\\' + app_name
+		file = file_name + '.html'
+		local_path = os.path.join(app, file)
+		file_path = os.path.join(BASE_DIR, local_path)
+		# print(app,file,BASE_DIR, file_path)
+
+		try:
+			with open(file_path, 'w') as fp:
+				fp.write(content)
+				fp.close()
+				message = 'File saved : ' + file_path
+		except:
+			message = 'Something went wrong! Check all file names are correct.'
+		self.context['message'] = message
+		return render(request, self.html_template_file, context=self.context)
 
 class Dashboard(LoginRequiredMixin, View):
 	'''
@@ -47,30 +57,27 @@ class Dashboard(LoginRequiredMixin, View):
 	html_template_file = 'mini/dashboard.html'
 	# model = model_name
 	# form = form_name
-
+	context = {}
+	context['page_name'] = 'Dashboard'
+	file_data = []
+	
 	def get(self, request):
 		# get method
-		return render(request, self.html_template_file, locals())
+		self.getListOfFiles('')
+		self.context['files'] =  self.file_data
+		return render(request, self.html_template_file, context = self.context)
 
 	def post(self, request):
 		# Post method
-		return 
+		return
 
-class Preview(LoginRequiredMixin, View):
-	'''
-		To preview the files that are in creation.
-	'''
-	login_url = '/admin/login/'
-	redirect_field_name = '/mini/ide/'
-	html_template_file = 'mini/preview_file.html'
-	# model = model_name
-	# form = form_name
+	def getListOfFiles(self, Name):
+		dirName = os.path.join(BASE_DIR, Name)
+		l = len(BASE_DIR.split('\\'))
+		print(os.walk(dirName, topdown=False))
+		for root, dirs, files in os.walk(dirName, topdown=False):
+			root = '\\'.join(root.split('\\')[l:])
 
-	def get(self, request, fname = None):
-		# get method
-		return render(request, self.html_template_file, locals())
-
-	def post(self, request):
-		# Post method
-		return 
+			self.file_data.append({'root': root,'dirs': dirs, 'files': files})
+			# print(root,dirs,files)
 
