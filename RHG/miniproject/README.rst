@@ -25,6 +25,6 @@ Quick start
 
 4. Use ``python manage.py createsuperuser`` to create Super User.
 
-5. Start the development server and visit http://127.0.0.1:8000/mini/dashboard/ or localhost:8000/mini/dashboard/ to start using mini (you'll need the Admin app enabled and super user created).
+5. Start the development server and visit ``http://127.0.0.1:8000/mini/dashboard/`` or ``localhost:8000/mini/dashboard/`` to start using mini (you'll need the Admin app enabled and super user created).
 
-6. Visit http://127.0.0.1:8000/mini/ide or simply localhost:8000/mini/ide/ to start using the editor.
+6. Visit ``http://127.0.0.1:8000/mini/ide`` or simply ``localhost:8000/mini/ide/`` to start using the editor.
