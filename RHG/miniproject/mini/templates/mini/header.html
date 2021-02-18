@@ -1,18 +1,15 @@
-<!-- header.html -->
-<header id="header" class="">
-	<div class="w3-panel w3-white w3-border w3-border-light-grey">
-		<div class="w3-row">
-			<div class="w3-col l3 m3 s2">
-				<h4>MINI {% if page_name %}{{page_name}}{% endif %}</h4>
-			</div>
-			<div class="w3-col l3 m3 s2">
-				<br>
-			</div>
-			<div class="w3-col l3 m3 s2 w3-center">
-				
-				<a href="{% url 'mini_dashboard' %}" class="w3-text-green w3-hover-text-red w3-button">DASHBOARD</a>    
-				<a href="{% url 'mini_IDE' %}" class="w3-text-green w3-hover-text-red w3-button">IDE</a>
-			</div>
+<div id="header" class="w3-panel w3-border w3-border-light-grey w3-sand">
+	<div class="w3-row">
+		<div class="w3-col l4 m3 s2">
+			<h4>MINI {% if page_name %}{{page_name}}{% endif %}</h4>
 		</div>
-	</div>
-</header><!-- /header -->
+		<div class="w3-col l4 m3 s2">
+			<br>
+		</div>
+		<div class="w3-col l4 m3 s2 w3-center">
+			<a href="{% url 'mini_dashboard' %}" class="w3-button w3-hover-blue">DASHBOARD</a>    
+			<a href="{% url 'mini_IDE' %}" class="w3-button w3-hover-blue">IDE</a>
+			<a href="{% url 'mini_logout' %}" class="w3-button w3-hover-red">LOGOUT</a>
+		</div>
+	</div>	
+</div>

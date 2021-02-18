@@ -3,55 +3,73 @@
 
 {% block head %}
   <title>IDE - Mini</title>
+  <link rel="stylesheet" href="{% static 'mini/css/rte_theme_default.css' %}" />
 {% endblock head %}
+
 {% block body %}
 
-<link rel="stylesheet" href="{% static 'mini/css/rte_theme_default.css' %}" />
-<script type="text/javascript" src="{% static 'mini/js/rte.js' %}"></script>
-<script type="text/javascript" src="{% static 'mini/plugins/all_plugins.js' %}"></script>
-
-<div id="div_editor1" style="min-height:400px;max-height:800px">
+<div id="div_editor1" style="min-height:400px;max-height:800px" class="w3-padding">
 </div>
 
 <div class="w3-container">
   <div class="w3-main">
-    <div>
-      <form method="POST" action="{% url 'mini_IDE' %}">
-        {% csrf_token %}
-        <label for="appname">App Name : </label>
-      <input type="text" id="appname" name="app_name" required>
+    <div class="w3-panel w3-border w3-padding">
+      
+      <form name="dataform" method="POST" action="{% url 'mini_IDE' %}">
+      {% csrf_token %}
+      <label for="appname">App Name : </label>
+      <input type="text" id="appname" name="app_name" required class="w3-margin"><br>
       <label for="filename">File Name : </label>
-      <input type="text" id="filename" name="file_name" required>.html
-      <input type="text" id="htmlcode" name="html_code" hidden onsubmit="update_code()">
-      <input type="submit" name="Save" value="Save">
+      <input type="text" id="filename" name="file_name" required class="w3-margin">.html<br>
+      <input type="text" id="htmlcode" name="html_code" hidden required>
+      <button class="w3-button w3-blue w3-hover-green" onclick="save_code()">Save</button>
       </form>
+
     </div>
     <div class="w3-panel">
-      <p class="w3-text-blue">{{message}}</p>
+      <p class="w3-text-blue">{{ message }}</p>
     </div>
+    <br><br><br>
   </div>
 </div>
+<script type="text/javascript" src="{% static 'mini/js/rte.js' %}"></script>
+<script type="text/javascript" src="{% static 'mini/plugins/all_plugins.js' %}"></script>
 <script>    
   var editor1 = new RichTextEditor("#div_editor1", { editorResizeMode: "height" });
-  editor1.setHTMLCode("{% autoescape off %}{{IDE_DEFAULT_content}}{% endautoescape %}")
-  var htmlcode = document.getElementById('htmlcode');
-  htmlcode.value = editor1.getHTMLCode();
-  function update_code() {
-  var htmlcode = document.getElementById('htmlcode');
-  htmlcode.value = editor1.getHTMLCode();
-  console.log(htmlcode.value);
+  editor1.setHTMLCode('{% autoescape off %}{{ IDE_DEFAULT_content }}{% endautoescape %}')
+  /*var htmlcode = document.getElementById('htmlcode');*/
+  /*htmlcode.value = editor1.getHTMLCode();*/
+
+  function save_code() {
+    var htmlcode = document.getElementById('htmlcode');
+    htmlcode.value = editor1.getHTMLCode();
+    /*console.log(htmlcode.value);*/
   }
 
-  function save() {
+  {% if formdata %}
+    appname = document.getElementById('appname');
+    appname.value = "{{ formdata.app_name }}";
+    fname = document.getElementById('filename');
+    fname.value = "{{ formdata.file_name }}";
+  {% endif %}
+  
+  /*function save() {
+
+    var htmlcode = document.getElementById('htmlcode');
+    htmlcode.value = editor1.getHTMLCode();
     fname = document.getElementById('filename').value
     appname = document.getElementById('appname').value
-    html = document.getElementById('div_editor1').html
-  }
-  function download() {
-    /*file operations*/
-    return 
-  }
-</script>
 
+    data = new FormData();
+    data.set('app_name',appname);
+    data.set('file_name',fname);
+    data.set('html_code',editor1.getHTMLCode());
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "{% url 'mini_IDE' %}", true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(data);
+  }*/
+</script>
 
 {% endblock body %}
